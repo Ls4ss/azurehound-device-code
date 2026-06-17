@@ -14,10 +14,10 @@ Ele foi projetado especificamente para cenários onde o usuário possui restriç
 
 Certifique-se de ter as seguintes ferramentas instaladas no seu ambiente Linux/macOS:
 
-# Debian / Ubuntu / Parrot OS / Kali
+### Debian / Ubuntu / Parrot OS / Kali
 sudo apt install curl jq -y
 
-# RHEL / CentOS / Fedora
+### RHEL / CentOS / Fedora
 sudo dnf install curl jq -y
 O binário do azurehound também deve estar presente no diretório (ou o caminho configurado corretamente nas variáveis do script).
 
