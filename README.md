@@ -27,8 +27,9 @@ Antes de rodar, abra o script e configure as variáveis no topo do arquivo:
 
 Bash
 TENANT="SEU_TENANT_ID_AQUI"         # Use preferencialmente o GUID do Tenant alvo
-AZUREHOUND_PATH="./azurehound"      # Caminho para o executável do AzureHound
+AZUREHOUND_PATH="/bin/azurehound"   # Caminho para o executável do AzureHound
 OUTPUT_FILE="output.json"           # Nome do arquivo de saída para o BloodHound
+
 Dica: Utilizar o ID do Tenant em formato GUID (ex: 0fe1c33c-50ee-467f-9405-8396b8b74e3d) em vez do domínio evita erros de escopo de usuário caso a conta seja um usuário convidado (Guest User) no ambiente.
 
 📖 Modo de Uso
