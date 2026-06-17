@@ -21,12 +21,12 @@ Certifique-se de ter as seguintes ferramentas instaladas no seu ambiente Linux/m
 * **Debian / Ubuntu / Parrot OS / Kali**
 ```bash
   sudo apt install curl jq -y
-  ```[cite: 2]
+  ```
 
 * **RHEL / CentOS / Fedora**
 ```bash
   sudo dnf install curl jq -y
-  ```[cite: 2]
+  ```
 
 > ⚠️ **Importante:** O binário do `azurehound` também deve estar presente no diretório (ou o caminho configurado corretamente nas variáveis do script)[cite: 2].
 
@@ -40,8 +40,7 @@ Antes de rodar, abra o script e ajuste as variáveis globais localizadas no topo
 TENANT="SEU_TENANT_ID_AQUI"         # Use preferencialmente o GUID do Tenant alvo
 AZUREHOUND_PATH="/bin/azurehound"   # Caminho para o executável do AzureHound
 OUTPUT_FILE="output.json"           # Nome do arquivo de saída para o BloodHound
-```[cite: 2]
-
+```
 > 💡 **Dica de Red Team:** Utilizar o ID do Tenant em formato GUID (ex: `0fe1c33c-50ee-467f-9405-8396b8b74e3d`) em vez do domínio nominal evita erros de escopo de usuário (como *User was not found*) caso a conta alvo seja um usuário convidado (*Guest User*) no ambiente[cite: 2].
 
 ---
@@ -51,12 +50,12 @@ OUTPUT_FILE="output.json"           # Nome do arquivo de saída para o BloodHoun
 1. Conceda permissão de execução ao script:
 ```bash
    chmod +x azhound-dc
-   ```[cite: 2]
+   ```
 
 2. Inicie a execução:
 ```bash
    ./azhound-dc
-   ```[cite: 2]
+   ```
 
 3. O terminal exibirá uma mensagem destacada. Abra o navegador indicado, acesse a URL de login, digite o código gerado e realize a autenticação com a conta correspondente[cite: 2].
 
