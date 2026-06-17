@@ -37,7 +37,7 @@ Certifique-se de ter as seguintes ferramentas instaladas no seu ambiente Linux/m
 Antes de rodar, abra o script e ajuste as variáveis globais localizadas no topo do arquivo:
 
 ```bash
-TENANT="SEU_TENANT_ID_AQUI"         #[ Use preferencialmente o GUID do Tenant alvo](https://www.whatismytenantid.com/)
+TENANT="SEU_TENANT_ID_AQUI"         #Use preferencialmente o GUID do Tenant alvo - Consulte o GUID em: https://www.whatismytenantid.com/
 AZUREHOUND_PATH="/bin/azurehound"   # Caminho para o executável do AzureHound
 OUTPUT_FILE="output.json"           # Nome do arquivo de saída para o BloodHound
 ```
