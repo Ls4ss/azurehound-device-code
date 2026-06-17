@@ -59,12 +59,11 @@ OUTPUT_FILE="output.json"           # Nome do arquivo de saída para o BloodHoun
 
 3. O terminal exibirá uma mensagem destacada. Abra o navegador indicado, acesse a URL de login, digite o código gerado e realize a autenticação com a conta correspondente[cite: 2].
 
-4. Volte ao terminal. O script detectará automaticamente a conclusão do login e gerará o arquivo de output. Basta fazer o upload do arquivo `output.json` diretamente na interface do BloodHound CE[cite: 2].
+4. Volte ao terminal. O script detectará automaticamente a conclusão do login e gerará o arquivo de output. Basta fazer o upload do arquivo `output.json` diretamente na interface do BloodHound CE.
 
 ---
 
 ## 🔗 Referências
 
-Este script foi desenvolvido com base na documentação oficial do SpecterOps para contorno de MFA e Acesso Condicional no AzureHound[cite: 2]:
-
+Este script foi desenvolvido com base na documentação oficial do SpecterOps para contorno de MFA e Acesso Condicional no AzureHound:
 * [BloodHound Documentation - Dealing with Multi-Factor Auth and Conditional Access Policies](https://bloodhound.specterops.io/collect-data/ce-collection/azurehound#dealing-with-multi-factor-auth-and-conditional-access-policies)
