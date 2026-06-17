@@ -1,0 +1,75 @@
+#!/bin/bash
+
+# ==========================================
+# CONFIGURAÇÕES - AJUSTE AQUI
+# ==========================================
+TENANT="contoso.onmicrosoft.com"
+AZUREHOUND_PATH="/bin/azurehound"  # Caminho para o binário do AzureHound
+OUTPUT_FILE="output.json"
+
+CLIENT_ID="1950a258-227b-4e31-a9cf-717495945fc2" # Azure PowerShell
+USER_AGENT="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+
+# ==========================================
+# FLUXO 1: SOLICITAR CÓDIGO DE DISPOSITIVO
+# ==========================================
+echo -e "\e[36m[*] Solicitando Device Code da Microsoft...\e[0m"
+
+DEVICE_RESPONSE=$(curl -s -X POST "https://login.microsoftonline.com/common/oauth2/devicecode?api-version=1.0" \
+    -H "User-Agent: $USER_AGENT" \
+    --data-urlencode "client_id=$CLIENT_ID" \
+    --data-urlencode "resource=https://graph.microsoft.com")
+
+USER_CODE=$(echo "$DEVICE_RESPONSE" | jq -r '.user_code')
+DEVICE_CODE=$(echo "$DEVICE_RESPONSE" | jq -r '.device_code')
+INTERVAL=$(echo "$DEVICE_RESPONSE" | jq -r '.interval')
+
+# Se o intervalo não vier correto, define um padrão seguro de 5 segundos
+if [ -z "$INTERVAL" ] || [ "$INTERVAL" = "null" ]; then INTERVAL=5; fi
+
+echo -e "\n\e[33m====================================================\e[0m"
+echo -e " Abra o navegador e acesse: \e[32mhttps://microsoft.com/devicelogin\e[0m"
+echo -e " Insira o código: \e[32m$USER_CODE\e[0m"
+echo -e "\e[33m====================================================\e[0m\n"
+
+# ==========================================
+# FLUXO 2: AGUARDAR AUTENTICAÇÃO (POLLING)
+# ==========================================
+echo -e "\e[36m[*] Aguardando autenticação no navegador...\e[0m"
+
+REFRESH_TOKEN=""
+
+while [ -z "$REFRESH_TOKEN" ] || [ "$REFRESH_TOKEN" = "null" ]; do
+    TOKEN_RESPONSE=$(curl -s -X POST "https://login.microsoftonline.com/Common/oauth2/token?api-version=1.0" \
+        -H "User-Agent: $USER_AGENT" \
+        --data-urlencode "client_id=$CLIENT_ID" \
+        --data-urlencode "grant_type=urn:ietf:params:oauth:grant-type:device_code" \
+        --data-urlencode "code=$DEVICE_CODE")
+
+    REFRESH_TOKEN=$(echo "$TOKEN_RESPONSE" | jq -r '.refresh_token // empty')
+
+    if [ -z "$REFRESH_TOKEN" ]; then
+        echo -n "."
+        sleep "$INTERVAL"
+    fi
+done
+
+echo -e "\n\e[32m[+] Autenticação bem-sucedida! Refresh Token obtido.\e[0m"
+
+# ==========================================
+# FLUXO 3: EXECUÇÃO DO AZUREHOUND
+# ==========================================
+echo -e "\e[36m[*] Iniciando a coleta de dados com AzureHound...\e[0m"
+
+if [ -f "$AZUREHOUND_PATH" ]; then
+    chmod +x "$AZUREHOUND_PATH"
+    
+    # Executa o AzureHound passando o token capturado dinamicamente
+    "$AZUREHOUND_PATH" -r "$REFRESH_TOKEN" list --tenant "$TENANT" -o "$OUTPUT_FILE"
+    
+    echo -e "\e[32m[+] Coleta concluída! Arquivo gerado: $OUTPUT_FILE\e[0m"
+else
+    echo -e "\e[31m[-] Erro: Executável do AzureHound não foi encontrado em $AZUREHOUND_PATH\e[0m"
+    echo -e "\e[33m[!] Seu Refresh Token para uso manual é:\e[0m"
+    echo "$REFRESH_TOKEN"
+fi
