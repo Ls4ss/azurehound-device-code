@@ -67,4 +67,4 @@ OUTPUT_FILE="output.json"           # Nome do arquivo de saída para o BloodHoun
 
 Este script foi desenvolvido com base na documentação oficial do SpecterOps para contorno de MFA e Acesso Condicional no AzureHound[cite: 2]:
 
-* [BloodHound Documentation - Dealing with Multi-Factor Auth and Conditional Access Policies](https://bloodhound.specterops.io/collect-data/ce-collection/azurehound#dealing-with-multi-factor-auth-and-conditional-access-policies)[cite: 2]
+* [BloodHound Documentation - Dealing with Multi-Factor Auth and Conditional Access Policies](https://bloodhound.specterops.io/collect-data/ce-collection/azurehound#dealing-with-multi-factor-auth-and-conditional-access-policies)
