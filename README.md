@@ -19,6 +19,7 @@ sudo apt install curl jq -y
 
 ### RHEL / CentOS / Fedora
 sudo dnf install curl jq -y
+
 O binário do azurehound também deve estar presente no diretório (ou o caminho configurado corretamente nas variáveis do script).
 
 ⚙️ Configuração
