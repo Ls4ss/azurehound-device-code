@@ -1,69 +1,69 @@
 # AzureHound Device Code Automation Script
 
-Este script em Bash automatiza o processo de coleta de dados do Entra ID (Azure AD) e AzureRM utilizando o **AzureHound Community Edition** através do fluxo de autenticação por **Device Code**.
+This Bash script automates the data collection process from Entra ID (Azure AD) and AzureRM using **AzureHound Community Edition** via the **Device Code** authentication flow.
 
-Ele foi projetado especificamente para cenários onde o usuário possui restrições de **MFA (Multi-Factor Authentication)** ou **Políticas de Acesso Condicional (CAP)**, eliminando a necessidade de interações manuais complexas via PowerShell para obter e gerenciar tokens de atualização (*Refresh Tokens*).
-
----
-
-## 🚀 Como Funciona
-
-1. **Solicitação Automatizada:** O script faz uma requisição HTTP para os endpoints da Microsoft solicitando um código de dispositivo utilizando o Client ID do Azure PowerShell (`1950a258-227b-4e31-a9cf-717495945fc2`).
-2. **Polling de Autenticação:** Ele entra em um loop aguardando que você insira o código gerado no navegador e conclua a autenticação.
-3. **Coleta Automática:** Assim que o login é confirmado, o script captura o *Refresh Token* dinamicamente e dispara o `azurehound` de forma imediata, gerando o arquivo JSON final pronto para importação no BloodHound.
+It was specifically designed for scenarios where the user encounters **MFA (Multi-Factor Authentication)** restrictions or **Conditional Access Policies (CAP)**, eliminating the need for complex manual PowerShell interactions to obtain and manage Refresh Tokens.
 
 ---
 
-## 📋 Pré-requisitos
+## 🚀 How It Works
 
-Certifique-se de ter as seguintes ferramentas instaladas no seu ambiente Linux/macOS:
+1. **Automated Request:** The script sends an HTTP request to Microsoft endpoints requesting a device code using the Azure PowerShell Client ID (`1950a258-227b-4e31-a9cf-717495945fc2`).
+2. **Authentication Polling:** It enters a loop waiting for you to enter the generated code into your browser and complete the authentication process.
+3. **Automatic Collection:** As soon as login is confirmed, the script dynamically captures the Refresh Token and immediately triggers `azurehound`, generating the final JSON file ready for import into BloodHound.
+
+---
+
+## 📋 Prerequisites
+
+Ensure you have the following tools installed on your Linux/macOS environment:
 
 * **Debian / Ubuntu / Parrot OS / Kali**
 ```bash
   sudo apt install curl jq -y
-  ```
+```
 
 * **RHEL / CentOS / Fedora**
 ```bash
   sudo dnf install curl jq -y
-  ```
+```
 
-> ⚠️ **Importante:** O binário do `azurehound` também deve estar presente no diretório (ou o caminho configurado corretamente nas variáveis do script).
+> ⚠️ **Important:** The `azurehound` binary must also be present in the directory (or the path correctly configured in the script variables).
 
 ---
 
-## ⚙️ Configuração
+## ⚙️ Configuration
 
-Antes de rodar, abra o script e ajuste as variáveis globais localizadas no topo do arquivo:
+Before running, open the script and adjust the global variables located at the top of the file:
 
 ```bash
-TENANT="SEU_TENANT_ID_AQUI"         #Use preferencialmente o GUID do Tenant alvo - Consulte-o em: https://www.whatismytenantid.com/
-AZUREHOUND_PATH="/bin/azurehound"   # Caminho para o executável do AzureHound
-OUTPUT_FILE="output.json"           # Nome do arquivo de saída para o BloodHound
+TENANT="YOUR_TENANT_ID_HERE"        # Preferably use the target Tenant GUID - Check it at: https://www.whatismytenantid.com/
+AZUREHOUND_PATH="/bin/azurehound"   # Path to the AzureHound executable
+OUTPUT_FILE="output.json"           # Output filename for BloodHound
 ```
-> 💡 **Dica de Red Team:** Utilizar o ID do Tenant em formato GUID (ex: `0fe1c33c-50ee-467f-9405-8396b8b74e3d`) em vez do domínio nominal evita erros de escopo de usuário (como *User was not found*) caso a conta alvo seja um usuário convidado (*Guest User*) no ambiente.
+> 💡 **Red Team Tip:** Using the Tenant ID in GUID format (e.g., `0fe1c33c-50ee-467f-9405-8396b8b74e3d`) instead of the domain name avoids user scope errors (such as *User was not found*) if the target account is a Guest User in the environment.
 
 ---
 
-## 📖 Modo de Uso
+## 📖 Usage
 
-1. Conceda permissão de execução ao script:
+1. Grant execution permission to the script:
 ```bash
    chmod +x azhound-dc
-   ```
+```
 
-2. Inicie a execução:
+2. Start execution:
 ```bash
    ./azhound-dc
-   ```
+```
 
-3. O terminal exibirá uma mensagem destacada. Abra o navegador indicado, acesse a URL de login, digite o código gerado e realize a autenticação com a conta correspondente.
+3. The terminal will display a highlighted message. Open the indicated browser, navigate to the login URL, enter the generated code, and authenticate with the corresponding account.
 
-4. Volte ao terminal. O script detectará automaticamente a conclusão do login e gerará o arquivo de output. Basta fazer o upload do arquivo `output.json` diretamente na interface do BloodHound CE.
+4. Return to the terminal. The script will automatically detect the completed login and generate the output file. Simply upload the `output.json` file directly into the BloodHound CE interface.
 
 ---
 
-## 🔗 Referências
+## 🔗 References
 
-Este script foi desenvolvido com base na documentação oficial do SpecterOps para contorno de MFA e Acesso Condicional no AzureHound:
+This script was developed based on the official SpecterOps documentation for bypassing MFA and Conditional Access in AzureHound:
 * [BloodHound Documentation - Dealing with Multi-Factor Auth and Conditional Access Policies](https://bloodhound.specterops.io/collect-data/ce-collection/azurehound#dealing-with-multi-factor-auth-and-conditional-access-policies)
